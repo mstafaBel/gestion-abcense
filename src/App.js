@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import Groups from './pages/Groups';
+import Attendance from './pages/Attendance';
+import Students from './pages/Students';
+import Layout from './components/layout';
 
 function App() {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  if (!isAuthenticated) {
+    return <Login />;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/groups" element={<Groups />} />
+        <Route path="/attendance" element={<Attendance />} />
+        <Route path="/students" element={<Students />} />
+      </Routes>
+    </Layout>
   );
 }
 
